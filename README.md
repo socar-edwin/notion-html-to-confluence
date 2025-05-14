@@ -21,3 +21,11 @@
         - api 테스트-1은 jira confluence 웹에서 생성
         
         ![image.png](imgs/image%202.png)
+
+### 실행 방법
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python main.py
+```
