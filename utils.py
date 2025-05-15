@@ -1,6 +1,7 @@
 import os
 import re
 import glob
+import unicodedata
 from urllib.parse import unquote
 from bs4 import BeautifulSoup
 
@@ -12,7 +13,9 @@ content_api = Content()
 
 def resolve_image_path(html_folder, image_src):
     decoded_src = unquote(image_src)
-    result_path = os.path.join(html_folder, decoded_src)
+    normalized_src = unicodedata.normalize('NFC', decoded_src)
+    result_path = os.path.join(html_folder, normalized_src)
+
     if os.path.exists(result_path):
         return result_path
 
