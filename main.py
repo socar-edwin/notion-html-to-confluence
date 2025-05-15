@@ -1,3 +1,4 @@
+import os
 from api.space import Space
 from api.page import Page
 from api.folder import Folder
@@ -14,7 +15,8 @@ def main():
     target_page_for_folder = "api 테스트-1"
     # 파일을 올릴 폴더 생성
     new_folder_title = "데이터엔지니어링 그룹 노션 문서(from Notion)"
-    html_path = "./docs"  # 최상위 폴더 지정
+    folder_name = 'zip_test' ## docs 내 HTML ZIP파일 압축 해제 결과 폴더 이름
+    inner_folder_name = [file for file in os.listdir(f'docs/{folder_name}/개인 페이지 & 공유된 페이지')if len(file.split('.'))==1][0]
 
     my_space = space_api.get_by_title(space_name)
     space_id = my_space["id"]
@@ -44,8 +46,8 @@ def main():
 
     # 2단계: 메인 페이지 본문에 포함된 notion 링크 → confluence 링크로 업데이트
     update_main_page_links_only(
-        html_path="docs/zip_test/개인 페이지 & 공유된 페이지/유저 활용 동적 재배치 14d599ae9e4180278bf6da1ae21e4ad0.html",
-        page_id=title_to_page_id_map["유저 활용 동적 재배치 14d599ae9e4180278bf6da1ae21e4ad0.html"],
+        html_path=f"docs/{folder_name}/개인 페이지 & 공유된 페이지/{inner_folder_name}.html",
+        page_id=title_to_page_id_map[f"{inner_folder_name}.html"],
         title_to_page_id_map=title_to_page_id_map,
         notion_id_to_confluence_url=notion_id_to_confluence_url,
         base_confluence_url=base_confluence_url
