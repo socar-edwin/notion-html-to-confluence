@@ -35,7 +35,7 @@ def main():
 
     # 1단계: 모든 Notion HTML → Confluence로 업로드 + 링크 매핑
     collect_page_links(
-        base_folder="docs/zip_test/개인 페이지 & 공유된 페이지",
+        base_folder=f"docs/{folder_name}/개인 페이지 & 공유된 페이지",
         _space_id=space_id,
         parent_page_id=created_folder_id,
         file_name_postfix="(from Notion)",
