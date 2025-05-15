@@ -1,7 +1,7 @@
 from api.space import Space
 from api.page import Page
 from api.folder import Folder
-from utils import process_html_and_images
+from utils import collect_page_links, update_main_page_links_only
 
 
 def main():
@@ -26,8 +26,30 @@ def main():
     # print(new_folder)
     created_folder_id = new_folder["id"]
     # created_folder_id = "3204882148"
-    process_html_and_images(html_path, space_id, created_folder_id, file_name_postfix="(from Notion)")
 
+    title_to_page_id_map = {}
+    notion_id_to_confluence_url = {}
+    base_confluence_url = "https://socarcorp.atlassian.net/wiki"
+
+    # 1단계: 모든 Notion HTML → Confluence로 업로드 + 링크 매핑
+    collect_page_links(
+        base_folder="docs/zip_test/개인 페이지 & 공유된 페이지",
+        _space_id=space_id,
+        parent_page_id=created_folder_id,
+        file_name_postfix="(from Notion)",
+        title_to_page_id_map=title_to_page_id_map,
+        notion_id_to_confluence_url=notion_id_to_confluence_url,
+        base_confluence_url=base_confluence_url
+    )
+
+    # 2단계: 메인 페이지 본문에 포함된 notion 링크 → confluence 링크로 업데이트
+    update_main_page_links_only(
+        html_path="docs/zip_test/개인 페이지 & 공유된 페이지/유저 활용 동적 재배치 14d599ae9e4180278bf6da1ae21e4ad0.html",
+        page_id=title_to_page_id_map["유저 활용 동적 재배치 14d599ae9e4180278bf6da1ae21e4ad0.html"],
+        title_to_page_id_map=title_to_page_id_map,
+        notion_id_to_confluence_url=notion_id_to_confluence_url,
+        base_confluence_url=base_confluence_url
+    )
 
 
 if __name__ == "__main__":
